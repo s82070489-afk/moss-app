@@ -1,0 +1,527 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================
+   MOSS - Emotional Habit Tracking App
+   A living forest that remembers your consistency
+   ============================================ */
+
+:root {
+  /* Primary Backgrounds - Deep Forest Night */
+  --background: #020816;
+  --background-secondary: #04111d;
+  --background-tertiary: #071421;
+  
+  /* Card Surfaces - Atmospheric Glass */
+  --card: #0b1f2a;
+  --card-secondary: #102735;
+  --card-foreground: rgba(255, 255, 255, 0.92);
+  
+  --popover: #0b1f2a;
+  --popover-foreground: rgba(255, 255, 255, 0.92);
+  
+  /* Moss Green Primary - Living Accent */
+  --primary: #5acb8a;
+  --primary-light: #73d99f;
+  --primary-lighter: #8ae6b3;
+  --primary-foreground: #020816;
+  
+  /* Secondary - Deep Forest Tones */
+  --secondary: #0b1f2a;
+  --secondary-foreground: rgba(255, 255, 255, 0.85);
+  
+  /* Muted - Fog and Distance */
+  --muted: #102735;
+  --muted-foreground: rgba(255, 255, 255, 0.38);
+  
+  /* Accent - Moonlight Blue */
+  --accent: #9ecfff;
+  --accent-foreground: #020816;
+  
+  /* Warm Light - Firefly Glow */
+  --warm: #f2d7a1;
+  
+  /* Fog Colors */
+  --fog-light: rgba(255, 255, 255, 0.08);
+  --fog-subtle: rgba(255, 255, 255, 0.05);
+  --fog-faint: rgba(255, 255, 255, 0.03);
+  
+  /* Text Hierarchy */
+  --foreground: rgba(255, 255, 255, 0.92);
+  --foreground-secondary: rgba(255, 255, 255, 0.6);
+  --foreground-muted: rgba(255, 255, 255, 0.38);
+  
+  /* Borders - Soft Atmospheric */
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --input: #0b1f2a;
+  --ring: #5acb8a;
+  
+  /* System */
+  --destructive: #ef4444;
+  --destructive-foreground: rgba(255, 255, 255, 0.92);
+  
+  /* Chart colors - Nature inspired */
+  --chart-1: #5acb8a;
+  --chart-2: #73d99f;
+  --chart-3: #9ecfff;
+  --chart-4: #8ae6b3;
+  --chart-5: #f2d7a1;
+  
+  /* Radius - Soft organic shapes */
+  --radius: 1.25rem;
+  --radius-sm: 0.75rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 1.75rem;
+  
+  /* Sidebar */
+  --sidebar: #020816;
+  --sidebar-foreground: rgba(255, 255, 255, 0.92);
+  --sidebar-primary: #5acb8a;
+  --sidebar-primary-foreground: #020816;
+  --sidebar-accent: #0b1f2a;
+  --sidebar-accent-foreground: rgba(255, 255, 255, 0.92);
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --sidebar-ring: #5acb8a;
+}
+
+.dark {
+  --background: #020816;
+  --foreground: rgba(255, 255, 255, 0.92);
+  --card: #0b1f2a;
+  --card-foreground: rgba(255, 255, 255, 0.92);
+  --popover: #0b1f2a;
+  --popover-foreground: rgba(255, 255, 255, 0.92);
+  --primary: #5acb8a;
+  --primary-foreground: #020816;
+  --secondary: #0b1f2a;
+  --secondary-foreground: rgba(255, 255, 255, 0.85);
+  --muted: #102735;
+  --muted-foreground: rgba(255, 255, 255, 0.38);
+  --accent: #9ecfff;
+  --accent-foreground: #020816;
+  --destructive: #ef4444;
+  --destructive-foreground: rgba(255, 255, 255, 0.92);
+  --border: rgba(255, 255, 255, 0.06);
+  --input: #0b1f2a;
+  --ring: #5acb8a;
+}
+
+@theme inline {
+  --font-sans: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
+  
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  
+  --radius-sm: var(--radius-sm);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Custom Moss theme colors */
+  --color-moss: #5acb8a;
+  --color-moss-light: #73d99f;
+  --color-moss-glow: #8ae6b3;
+  --color-moonlight: #9ecfff;
+  --color-warm: #f2d7a1;
+  --color-fog: rgba(255, 255, 255, 0.05);
+  --color-deep-night: #020816;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  html {
+    background: var(--background);
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ============================================
+   ANIMATION SYSTEM
+   Philosophy: Slow. Organic. Breathing. Meditative.
+   ============================================ */
+
+/* Slow breathing float - for main tree elements */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-8px); 
+  }
+}
+
+/* Soft atmospheric glow pulse */
+@keyframes glow-pulse {
+  0%, 100% { 
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+/* Firefly/particle floating - slow and dreamy */
+@keyframes particle-float {
+  0% { 
+    transform: translateY(0) translateX(0); 
+    opacity: 0; 
+  }
+  10% { 
+    opacity: 0.8; 
+  }
+  50% {
+    transform: translateY(-50px) translateX(15px);
+    opacity: 0.6;
+  }
+  90% { 
+    opacity: 0.3; 
+  }
+  100% { 
+    transform: translateY(-100px) translateX(25px); 
+    opacity: 0; 
+  }
+}
+
+/* Firefly glow - random pulsing */
+@keyframes firefly {
+  0%, 100% { 
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  25% { 
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.4;
+    transform: scale(1.1);
+  }
+  75% { 
+    opacity: 0.8;
+    transform: scale(0.9);
+  }
+}
+
+/* Gentle tree sway - organic movement */
+@keyframes sway {
+  0%, 100% { 
+    transform: rotate(-1.5deg); 
+  }
+  50% { 
+    transform: rotate(1.5deg); 
+  }
+}
+
+/* Soft fade in up - cinematic entrance */
+@keyframes fade-in-up {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Breathing scale - alive feeling */
+@keyframes breathe {
+  0%, 100% { 
+    transform: scale(1); 
+  }
+  50% { 
+    transform: scale(1.02); 
+  }
+}
+
+/* Soft ripple for button feedback */
+@keyframes ripple {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Fog drift - horizontal atmospheric movement */
+@keyframes fog-drift {
+  0%, 100% {
+    transform: translateX(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(20px);
+    opacity: 0.3;
+  }
+}
+
+/* Star twinkle */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
+}
+
+/* Animation utility classes */
+.animate-float {
+  animation: float 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-particle {
+  animation: particle-float 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-firefly {
+  animation: firefly 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-sway {
+  animation: sway 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: bottom center;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.animate-breathe {
+  animation: breathe 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-fog-drift {
+  animation: fog-drift 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-twinkle {
+  animation: twinkle 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Staggered animation delays */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
+.delay-700 { animation-delay: 0.7s; }
+.delay-800 { animation-delay: 0.8s; }
+.delay-1000 { animation-delay: 1s; }
+.delay-1200 { animation-delay: 1.2s; }
+.delay-1500 { animation-delay: 1.5s; }
+.delay-2000 { animation-delay: 2s; }
+.delay-3000 { animation-delay: 3s; }
+.delay-4000 { animation-delay: 4s; }
+
+/* ============================================
+   CARD DESIGN SYSTEM
+   Philosophy: Soft, translucent, layered, atmospheric
+   ============================================ */
+
+.moss-card {
+  background: rgba(11, 31, 42, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.moss-card:hover {
+  background: rgba(11, 31, 42, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.moss-card-glow {
+  position: relative;
+}
+
+.moss-card-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(90, 203, 138, 0.08) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+/* ============================================
+   BUTTON SYSTEM
+   Philosophy: Tactile, alive, soft feedback
+   ============================================ */
+
+.moss-button-primary {
+  background: linear-gradient(
+    135deg,
+    #5acb8a 0%,
+    #73d99f 50%,
+    #5acb8a 100%
+  );
+  color: #020816;
+  border: none;
+  border-radius: var(--radius-lg);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(90, 203, 138, 0.25);
+}
+
+.moss-button-primary:hover {
+  box-shadow: 0 6px 30px rgba(90, 203, 138, 0.35);
+  transform: translateY(-1px);
+}
+
+.moss-button-primary:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 15px rgba(90, 203, 138, 0.2);
+}
+
+.moss-button-glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.moss-button-glass:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ============================================
+   TYPOGRAPHY ADJUSTMENTS
+   Philosophy: Elegant, minimal, cinematic, airy
+   ============================================ */
+
+.text-hero {
+  font-size: 2.25rem;
+  font-weight: 200;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.text-section {
+  font-size: 1.25rem;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.text-body {
+  font-size: 0.9375rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.text-micro {
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   ATMOSPHERIC UTILITIES
+   ============================================ */
+
+.moss-glow {
+  box-shadow: 
+    0 0 20px rgba(90, 203, 138, 0.15),
+    0 0 40px rgba(90, 203, 138, 0.08),
+    0 0 60px rgba(90, 203, 138, 0.04);
+}
+
+.moonlight-glow {
+  box-shadow: 
+    0 0 30px rgba(158, 207, 255, 0.2),
+    0 0 60px rgba(158, 207, 255, 0.1);
+}
+
+.warm-glow {
+  box-shadow: 
+    0 0 15px rgba(242, 215, 161, 0.3),
+    0 0 30px rgba(242, 215, 161, 0.15);
+}
+
+/* Gradient backgrounds */
+.bg-forest-night {
+  background: linear-gradient(
+    180deg,
+    #020816 0%,
+    #04111d 32%,
+    #071421 72%,
+    #081a27 90%,
+    #0b1f2a 100%
+  );
+}
+
+.bg-forest-fog {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(90, 203, 138, 0.03) 50%,
+    rgba(90, 203, 138, 0.06) 100%
+  );
+}
