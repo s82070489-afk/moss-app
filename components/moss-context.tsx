@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react"
 
-// 날짜별 기록 — "2026-05-24" 형식의 키에 횟수 저장
 export type DailyLog = Record<string, number>
 
 export interface Habit {
@@ -16,16 +15,21 @@ export interface Habit {
   dailyLog: DailyLog
 }
 
+// ✅ 지원 언어
+export type Language = "en" | "ko" | "ja" | "zh" | "es" | "fr"
+
 interface MossContextType {
   habits: Habit[]
   addHabit: (habit: Omit<Habit, "id" | "count" | "createdAt" | "lastUpdated" | "dailyLog">) => void
   incrementHabit: (id: string) => void
   deleteHabit: (id: string) => void
+  importData: (json: string) => { success: boolean; message: string }
   totalActions: number
   settings: {
     ambientSound: boolean
     darkMode: boolean
     emotionalMessages: "frequent" | "occasional" | "rare"
+    language: Language
   }
   updateSettings: (settings: Partial<MossContextType["settings"]>) => void
 }
@@ -37,18 +41,14 @@ function todayKey(): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
 }
 
-const defaultHabits: Habit[] = [
-  { id: "1", name: "Reading", icon: "📖", count: 127, intention: "I want to learn something new every day", createdAt: "2024-01-15", lastUpdated: new Date().toISOString(), dailyLog: {} },
-  { id: "2", name: "Meditation", icon: "🧘", count: 89, intention: "I want to become calmer", createdAt: "2024-02-01", lastUpdated: new Date().toISOString(), dailyLog: {} },
-  { id: "3", name: "Drawing", icon: "🎨", count: 45, intention: "I want to express myself", createdAt: "2024-03-10", lastUpdated: new Date().toISOString(), dailyLog: {} },
-  { id: "4", name: "Walking", icon: "🚶", count: 203, intention: "I want to connect with nature", createdAt: "2024-01-01", lastUpdated: new Date().toISOString(), dailyLog: {} },
-  { id: "5", name: "Writing", icon: "✍️", count: 12, intention: "I want to leave small traces every day", createdAt: "2024-05-01", lastUpdated: new Date().toISOString(), dailyLog: {} },
-]
+// ✅ 기본 습관 없음 — 완전히 빈 상태로 시작
+const defaultHabits: Habit[] = []
 
 const defaultSettings = {
-  ambientSound: true,
+  ambientSound: false,
   darkMode: true,
   emotionalMessages: "frequent" as const,
+  language: "en" as Language,
 }
 
 function loadFromStorage<T>(key: string, fallback: T): T {
@@ -80,9 +80,10 @@ export function MossProvider({ children }: { children: ReactNode }) {
       ...h,
       dailyLog: h.dailyLog ?? {}
     }))
-    const savedSettings = loadFromStorage("moss-settings", defaultSettings)
+    const savedSettings = loadFromStorage("moss-settings", { ...defaultSettings })
+    // 구버전 데이터에 language 없을 수 있으니 보완
     setHabits(migratedHabits)
-    setSettings(savedSettings)
+    setSettings({ ...defaultSettings, ...savedSettings })
     setLoaded(true)
   }, [])
 
@@ -131,6 +132,34 @@ export function MossProvider({ children }: { children: ReactNode }) {
     setHabits((prev) => prev.filter((habit) => habit.id !== id))
   }
 
+  // ✅ JSON 파일 불러오기 — Export로 받은 파일을 다시 로드
+  const importData = (json: string): { success: boolean; message: string } => {
+    try {
+      const data = JSON.parse(json)
+
+      // 유효성 검사
+      if (!data.habits || !Array.isArray(data.habits)) {
+        return { success: false, message: "Invalid file format." }
+      }
+
+      const importedHabits: Habit[] = data.habits.map((h: Partial<Habit>) => ({
+        id: h.id ?? Date.now().toString(),
+        name: h.name ?? "Unnamed",
+        icon: h.icon ?? "🌱",
+        count: h.count ?? 0,
+        intention: h.intention ?? undefined,
+        createdAt: h.createdAt ?? new Date().toISOString(),
+        lastUpdated: h.lastUpdated ?? new Date().toISOString(),
+        dailyLog: h.dailyLog ?? {},
+      }))
+
+      setHabits(importedHabits)
+      return { success: true, message: `${importedHabits.length} habits restored.` }
+    } catch {
+      return { success: false, message: "Could not read file." }
+    }
+  }
+
   const updateSettings = (newSettings: Partial<typeof settings>) => {
     setSettings((prev) => ({ ...prev, ...newSettings }))
   }
@@ -144,6 +173,7 @@ export function MossProvider({ children }: { children: ReactNode }) {
         addHabit,
         incrementHabit,
         deleteHabit,
+        importData,
         totalActions,
         settings,
         updateSettings,

@@ -105,12 +105,12 @@ export function AddHabitScreen({ onClose }: AddHabitScreenProps) {
             <label className="block text-[rgba(255,255,255,0.38)] text-xs font-light tracking-[0.1em] uppercase mb-3 px-1">
               Choose a symbol
             </label>
-            <div className="grid grid-cols-50 gap-1.0">
+            <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-3">
               {habitIcons.map((icon) => (
                 <button
                   key={icon}
                   onClick={() => setSelectedIcon(icon)}
-                  className="aspect-square rounded-md flex items-center justify-center text-sm transition-all duration-100"
+                 className="aspect-square min-h-[52px] rounded-xl flex items-center justify-center text-2xl transition-all duration-300"
                   style={{
                     padding: '0.4rem',
                     background: selectedIcon === icon 
