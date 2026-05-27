@@ -15,7 +15,6 @@ export interface Habit {
   dailyLog: DailyLog
 }
 
-// ✅ 지원 언어
 export type Language = "en" | "ko" | "ja" | "zh" | "es" | "fr"
 
 interface MossContextType {
@@ -40,9 +39,6 @@ function todayKey(): string {
   const d = new Date()
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
 }
-
-// ✅ 기본 습관 없음 — 완전히 빈 상태로 시작
-const defaultHabits: Habit[] = []
 
 const defaultSettings = {
   ambientSound: false,
@@ -70,18 +66,17 @@ function saveToStorage<T>(key: string, value: T): void {
 }
 
 export function MossProvider({ children }: { children: ReactNode }) {
-  const [habits, setHabits] = useState<Habit[]>(defaultHabits)
+  const [habits, setHabits] = useState<Habit[]>([])
   const [settings, setSettings] = useState(defaultSettings)
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    const savedHabits = loadFromStorage<Habit[]>("moss-habits", defaultHabits)
+    const savedHabits = loadFromStorage<Habit[]>("moss-habits", [])
     const migratedHabits = savedHabits.map(h => ({
       ...h,
       dailyLog: h.dailyLog ?? {}
     }))
-    const savedSettings = loadFromStorage("moss-settings", { ...defaultSettings })
-    // 구버전 데이터에 language 없을 수 있으니 보완
+    const savedSettings = loadFromStorage("moss-settings", defaultSettings)
     setHabits(migratedHabits)
     setSettings({ ...defaultSettings, ...savedSettings })
     setLoaded(true)
@@ -132,16 +127,12 @@ export function MossProvider({ children }: { children: ReactNode }) {
     setHabits((prev) => prev.filter((habit) => habit.id !== id))
   }
 
-  // ✅ JSON 파일 불러오기 — Export로 받은 파일을 다시 로드
   const importData = (json: string): { success: boolean; message: string } => {
     try {
       const data = JSON.parse(json)
-
-      // 유효성 검사
       if (!data.habits || !Array.isArray(data.habits)) {
         return { success: false, message: "Invalid file format." }
       }
-
       const importedHabits: Habit[] = data.habits.map((h: Partial<Habit>) => ({
         id: h.id ?? Date.now().toString(),
         name: h.name ?? "Unnamed",
@@ -152,7 +143,6 @@ export function MossProvider({ children }: { children: ReactNode }) {
         lastUpdated: h.lastUpdated ?? new Date().toISOString(),
         dailyLog: h.dailyLog ?? {},
       }))
-
       setHabits(importedHabits)
       return { success: true, message: `${importedHabits.length} habits restored.` }
     } catch {

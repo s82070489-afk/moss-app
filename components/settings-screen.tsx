@@ -2,7 +2,7 @@
 
 import { useMoss } from "./moss-context"
 import { useTranslation, LANGUAGE_LABELS, Language } from "@/lib/i18n"
-import { Moon, Volume2, Bell, Download, Upload, MessageCircle, Globe, ChevronRight } from "lucide-react"
+import { Moon, Volume2, Bell, Download, Upload, MessageCircle, ChevronRight } from "lucide-react"
 import { useRef, useState } from "react"
 
 export function SettingsScreen() {
@@ -11,7 +11,6 @@ export function SettingsScreen() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [importMessage, setImportMessage] = useState<{ text: string; ok: boolean } | null>(null)
 
-  // ✅ Export
   const handleExport = () => {
     const exportData = {
       exportedAt: new Date().toISOString(),
@@ -37,7 +36,6 @@ export function SettingsScreen() {
     URL.revokeObjectURL(url)
   }
 
-  // ✅ Import
   const handleImportClick = () => fileInputRef.current?.click()
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +52,6 @@ export function SettingsScreen() {
     e.target.value = ""
   }
 
-  // ✅ 알림
   const handleNotificationRequest = async () => {
     if (!("Notification" in window)) return
     if (Notification.permission === "granted") {
@@ -71,14 +68,7 @@ export function SettingsScreen() {
     <div className="min-h-screen relative overflow-hidden">
       <div className="fixed inset-0 bg-gradient-to-b from-[#020816] via-[#04111d] to-[#071421]" />
 
-      {/* hidden file input */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".json"
-        className="hidden"
-        onChange={handleFileChange}
-      />
+      <input ref={fileInputRef} type="file" accept=".json" className="hidden" onChange={handleFileChange} />
 
       <div className="relative z-10 px-6 pt-14 pb-32">
         <header className="mb-10 animate-fade-in-up">
@@ -125,11 +115,9 @@ export function SettingsScreen() {
                   <button
                     key={lang}
                     onClick={() => updateSettings({ language: lang })}
-                    className="py-3 px-2 text-center transition-all duration-300 relative"
+                    className="py-3 px-2 text-center transition-all duration-300"
                     style={{
-                      backgroundColor: settings.language === lang
-                        ? "rgba(90,203,138,0.1)"
-                        : "transparent",
+                      backgroundColor: settings.language === lang ? "rgba(90,203,138,0.1)" : "transparent",
                       borderRight: (i + 1) % 3 !== 0 ? "1px solid rgba(255,255,255,0.04)" : "none",
                       borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.04)" : "none",
                     }}
@@ -153,22 +141,14 @@ export function SettingsScreen() {
               <ActionSetting
                 icon={Bell}
                 label={tx.enableReminders}
-                description={
-                  typeof window !== "undefined" && Notification.permission === "granted"
-                    ? tx.remindersActive
-                    : tx.remindersHint
-                }
+                description={typeof window !== "undefined" && Notification.permission === "granted" ? tx.remindersActive : tx.remindersHint}
                 onClick={handleNotificationRequest}
               />
               <Divider />
               <SelectSetting
                 icon={MessageCircle}
                 label={tx.emotionalMessages}
-                value={
-                  settings.emotionalMessages === "frequent" ? "Frequent"
-                  : settings.emotionalMessages === "occasional" ? "Occasional"
-                  : "Rare"
-                }
+                value={settings.emotionalMessages === "frequent" ? "Frequent" : settings.emotionalMessages === "occasional" ? "Occasional" : "Rare"}
                 options={["Frequent", "Occasional", "Rare"]}
                 onSelect={(v) => updateSettings({ emotionalMessages: v.toLowerCase() as "frequent" | "occasional" | "rare" })}
               />
@@ -181,24 +161,12 @@ export function SettingsScreen() {
               {tx.data}
             </p>
             <div className="moss-card overflow-hidden">
-              <ActionSetting
-                icon={Download}
-                label={tx.exportForest}
-                description={tx.exportDesc}
-                onClick={handleExport}
-              />
+              <ActionSetting icon={Download} label={tx.exportForest} description={tx.exportDesc} onClick={handleExport} />
               <Divider />
-              <ActionSetting
-                icon={Upload}
-                label={tx.importForest}
-                description={tx.importDesc}
-                onClick={handleImportClick}
-              />
+              <ActionSetting icon={Upload} label={tx.importForest} description={tx.importDesc} onClick={handleImportClick} />
             </div>
-
-            {/* import 결과 메시지 */}
             {importMessage && (
-              <div className="mt-3 px-4 py-3 rounded-2xl text-sm font-light text-center transition-all duration-300"
+              <div className="mt-3 px-4 py-3 rounded-2xl text-sm font-light text-center"
                 style={{
                   backgroundColor: importMessage.ok ? "rgba(90,203,138,0.1)" : "rgba(239,68,68,0.1)",
                   border: `1px solid ${importMessage.ok ? "rgba(90,203,138,0.2)" : "rgba(239,68,68,0.2)"}`,
@@ -230,6 +198,9 @@ export function SettingsScreen() {
                 <p className="text-[rgba(255,255,255,0.5)] text-sm font-light leading-relaxed max-w-xs mx-auto">
                   A calm emotional space where small repeated actions slowly grow into a living memory forest.
                 </p>
+                <a href="/privacy" className="mt-4 inline-block text-[rgba(255,255,255,0.25)] text-xs font-light underline underline-offset-2">
+                  Privacy Policy
+                </a>
               </div>
             </div>
           </section>
@@ -259,13 +230,10 @@ function ToggleSetting({ icon: Icon, label, description, checked, onChange, disa
         <p className="text-[rgba(255,255,255,0.92)] text-sm font-light">{label}</p>
         <p className="text-[rgba(255,255,255,0.38)] text-xs font-light">{description}</p>
       </div>
-      <button
-        onClick={() => !disabled && onChange(!checked)}
-        disabled={disabled}
+      <button onClick={() => !disabled && onChange(!checked)} disabled={disabled}
         className="relative w-12 h-7 rounded-full transition-all duration-400"
         style={{ backgroundColor: checked ? "rgba(90,203,138,0.5)" : "rgba(255,255,255,0.08)", opacity: disabled ? 0.5 : 1, cursor: disabled ? "not-allowed" : "pointer" }}
-        role="switch" aria-checked={checked} aria-label={label}
-      >
+        role="switch" aria-checked={checked} aria-label={label}>
         <div className="absolute top-1 w-5 h-5 rounded-full transition-transform duration-400"
           style={{ backgroundColor: checked ? "#5acb8a" : "rgba(255,255,255,0.6)", transform: checked ? "translateX(24px)" : "translateX(4px)", boxShadow: checked ? "0 0 8px rgba(90,203,138,0.5)" : "none" }} />
       </button>
